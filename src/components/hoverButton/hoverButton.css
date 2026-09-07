@@ -1,0 +1,75 @@
+.hover-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  border: none;
+  border-radius: 999px;
+  padding: 0.55rem 1.5rem;
+  background: var(--color-teal);
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.hover-button:hover {
+  box-shadow: 0 6px 16px rgba(11, 41, 66, 0.18);
+}
+
+.hover-button:active {
+  transform: scale(0.97);
+}
+
+.hover-button__default {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.hover-button__dot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-teal-dark);
+  transition: transform 0.3s ease;
+}
+
+.hover-button__label {
+  display: inline-block;
+  color: #ffffff;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.hover-button__reveal {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  transform: translateX(48px);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.hover-button:hover .hover-button__dot {
+  transform: scale(60);
+}
+
+.hover-button:hover .hover-button__label {
+  transform: translateX(48px);
+  opacity: 0;
+}
+
+.hover-button:hover .hover-button__reveal {
+  transform: translateX(0);
+  opacity: 1;
+}

@@ -1,0 +1,90 @@
+.what {
+  padding: 5rem 0;
+  background: #ffffff;
+}
+
+.what__intro {
+  max-width: 42rem;
+  margin: 0 auto 3rem;
+  text-align: center;
+}
+
+.what__heading {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 1rem;
+}
+
+.what__text {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: #4b5563;
+}
+
+.what__cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.75rem;
+}
+
+.what__card {
+  padding: 2.25rem;
+  border-radius: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+.what__card--products {
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
+}
+
+.what__card--custom {
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+}
+
+.what__tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  margin-bottom: 1rem;
+}
+
+.what__card--products .what__tag {
+  color: #4338ca;
+  background: #e0e7ff;
+}
+
+.what__card--custom .what__tag {
+  color: #047857;
+  background: #d1fae5;
+}
+
+.what__card-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.6rem;
+}
+
+.what__card-text {
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: #374151;
+}
+
+@media (max-width: 700px) {
+  .what__cards {
+    grid-template-columns: 1fr;
+  }
+
+  .what__heading {
+    font-size: 1.75rem;
+  }
+}

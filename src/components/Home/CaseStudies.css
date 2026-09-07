@@ -1,0 +1,146 @@
+.cases {
+  padding: 5rem 0;
+  background: #ffffff;
+}
+
+.cases__intro {
+  max-width: 42rem;
+  margin: 0 auto 3rem;
+  text-align: center;
+}
+
+.cases__heading {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 1rem;
+}
+
+.cases__text {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: #4b5563;
+}
+
+.cases__list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.case-card {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.case-card__panel {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #ffffff;
+}
+
+.case-card__panel--indigo {
+  background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%);
+}
+
+.case-card__panel--amber {
+  background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%);
+}
+
+.case-card__panel--emerald {
+  background: linear-gradient(135deg, #10b981 0%, #047857 100%);
+}
+
+.case-card__industry {
+  align-self: flex-start;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  margin-bottom: 2rem;
+}
+
+.case-card__outcomes {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.case-card__outcome {
+  display: flex;
+  flex-direction: column;
+}
+
+.case-card__outcome-metric {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.case-card__outcome-label {
+  font-size: 0.8rem;
+  margin-top: 0.4rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.case-card__content {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.case-card__client {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 1.25rem;
+}
+
+.case-card__block {
+  margin-bottom: 1rem;
+}
+
+.case-card__block-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #6b7280;
+  margin-bottom: 0.3rem;
+}
+
+.case-card__block p {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: #374151;
+}
+
+.case-card__stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.case-card__tech {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #374151;
+  background: #f3f4f6;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+}
+
+@media (max-width: 900px) {
+  .case-card {
+    grid-template-columns: 1fr;
+  }
+}

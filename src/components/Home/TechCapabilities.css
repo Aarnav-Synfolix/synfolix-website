@@ -1,0 +1,111 @@
+.tech {
+  padding: 5rem 0;
+  background: #f9fafb;
+}
+
+.tech__intro {
+  max-width: 42rem;
+  margin: 0 auto 3rem;
+  text-align: center;
+}
+
+.tech__heading {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 1rem;
+}
+
+.tech__text {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: #4b5563;
+}
+
+.tech__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.tech-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 1.75rem;
+}
+
+.tech-card__dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.tech-card__dot--indigo {
+  background: #6366f1;
+}
+
+.tech-card__dot--violet {
+  background: #8b5cf6;
+}
+
+.tech-card__dot--emerald {
+  background: #10b981;
+}
+
+.tech-card__dot--sky {
+  background: #0ea5e9;
+}
+
+.tech-card__title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.tech-card__description {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #4b5563;
+  margin-bottom: 1.25rem;
+}
+
+.tech-card__items {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tech-card__items li {
+  font-size: 0.85rem;
+  color: #374151;
+  padding-left: 1.1rem;
+  position: relative;
+}
+
+.tech-card__items li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.5rem;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #9ca3af;
+}
+
+@media (max-width: 900px) {
+  .tech__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .tech__grid {
+    grid-template-columns: 1fr;
+  }
+}
