@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useRevealOnScroll } from '../../hooks/useRevealOnScroll'
 import './Contact.css'
 
 const INDUSTRIES = ['Healthcare', 'Legal', 'Education', 'Finance', 'Retail', 'Business', 'Startup', 'Enterprise', 'Other']
@@ -19,6 +20,7 @@ const INITIAL_FORM = {
 function Contact() {
   const [formData, setFormData] = useState(INITIAL_FORM)
   const [submitted, setSubmitted] = useState(false)
+  const [ref, isVisible] = useRevealOnScroll()
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -31,7 +33,7 @@ function Contact() {
   }
 
   return (
-    <section className="contact" id="contact">
+    <section ref={ref} className={`contact reveal-left ${isVisible ? 'reveal-left--visible' : ''}`} id="contact">
       <div className="container contact__inner">
         <div className="contact__form-col">
           <h2 className="contact__heading">Build With Synfolix</h2>

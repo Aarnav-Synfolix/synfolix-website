@@ -1,8 +1,11 @@
+import { useRevealOnScroll } from '../../hooks/useRevealOnScroll'
 import './WhatIsSynfolix.css'
 
 function WhatIsSynfolix() {
+  const [ref, isVisible] = useRevealOnScroll()
+
   return (
-    <section className="what">
+    <section ref={ref} className={`what reveal-left ${isVisible ? 'reveal-left--visible' : ''}`}>
       <div className="container">
         <div className="what__intro">
           <h2 className="what__heading">What Is Synfolix?</h2>

@@ -1,3 +1,4 @@
+import { useRevealOnScroll } from '../../hooks/useRevealOnScroll'
 import './BuildWithSynfolix.css'
 
 const JOURNEY_STEPS = ['Idea', 'Strategy', 'Design', 'Development', 'Testing', 'Launch', 'Scale']
@@ -13,8 +14,10 @@ const CAPABILITIES = [
 ]
 
 function BuildWithSynfolix() {
+  const [ref, isVisible] = useRevealOnScroll()
+
   return (
-    <section className="build" id="solutions">
+    <section ref={ref} className={`build reveal-left ${isVisible ? 'reveal-left--visible' : ''}`} id="solutions">
       <div className="container">
         <h2 className="build__heading">Have an idea? We&rsquo;ll build it with you.</h2>
 

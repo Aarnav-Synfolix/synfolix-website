@@ -1,3 +1,4 @@
+import { useRevealOnScroll } from '../../hooks/useRevealOnScroll'
 import './WhySynfolix.css'
 
 const PILLARS = [
@@ -24,8 +25,10 @@ const PILLARS = [
 ]
 
 function WhySynfolix() {
+  const [ref, isVisible] = useRevealOnScroll()
+
   return (
-    <section className="why">
+    <section ref={ref} className={`why reveal-left ${isVisible ? 'reveal-left--visible' : ''}`}>
       <div className="container">
         <h2 className="why__heading">Why Synfolix?</h2>
 

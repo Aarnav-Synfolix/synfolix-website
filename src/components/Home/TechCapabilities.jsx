@@ -1,3 +1,4 @@
+import { useRevealOnScroll } from '../../hooks/useRevealOnScroll'
 import './TechCapabilities.css'
 
 const CAPABILITIES = [
@@ -28,8 +29,10 @@ const CAPABILITIES = [
 ]
 
 function TechCapabilities() {
+  const [ref, isVisible] = useRevealOnScroll()
+
   return (
-    <section className="tech">
+    <section ref={ref} className={`tech reveal-left ${isVisible ? 'reveal-left--visible' : ''}`}>
       <div className="container">
         <div className="tech__intro">
           <h2 className="tech__heading">Technology Capabilities</h2>

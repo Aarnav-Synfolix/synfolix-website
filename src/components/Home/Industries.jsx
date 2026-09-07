@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useRevealOnScroll } from '../../hooks/useRevealOnScroll'
 import './Industries.css'
 
 const INDUSTRIES = ['Healthcare', 'Legal', 'Education', 'Finance', 'Retail', 'Business', 'Startups', 'Enterprise']
@@ -7,9 +8,10 @@ const PREVIEW_COUNT = 6
 function Industries() {
   const [showAll, setShowAll] = useState(false)
   const visibleIndustries = showAll ? INDUSTRIES : INDUSTRIES.slice(0, PREVIEW_COUNT)
+  const [ref, isVisible] = useRevealOnScroll()
 
   return (
-    <section className="industries" id="industries">
+    <section ref={ref} className={`industries reveal-left ${isVisible ? 'reveal-left--visible' : ''}`} id="industries">
       <div className="container">
         <div className="industries__intro">
           <h2 className="industries__heading">Industries We Serve</h2>

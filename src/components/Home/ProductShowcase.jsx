@@ -1,3 +1,4 @@
+import { useRevealOnScroll } from '../../hooks/useRevealOnScroll'
 import './ProductShowcase.css'
 
 const PRODUCTS = [
@@ -36,8 +37,10 @@ const PRODUCTS = [
 ]
 
 function ProductShowcase() {
+  const [ref, isVisible] = useRevealOnScroll()
+
   return (
-    <section className="showcase" id="products">
+    <section ref={ref} className={`showcase reveal-left ${isVisible ? 'reveal-left--visible' : ''}`} id="products">
       <div className="container">
         <div className="showcase__intro">
           <h2 className="showcase__heading">Our Products</h2>

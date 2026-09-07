@@ -20,6 +20,28 @@ function Navbar() {
   const [isRevealed, setIsRevealed] = useState(false)
   const linkRefs = useRef({})
   const indicatorRef = useRef(null)
+  const isNavigatingRef = useRef(false)
+  const navDebounceRef = useRef(null)
+
+  const beginNavGuard = () => {
+    isNavigatingRef.current = true
+    if (navDebounceRef.current) clearTimeout(navDebounceRef.current)
+    navDebounceRef.current = setTimeout(() => {
+      isNavigatingRef.current = false
+    }, 150)
+  }
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (isNavigatingRef.current) beginNavGuard()
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      if (navDebounceRef.current) clearTimeout(navDebounceRef.current)
+    }
+  }, [])
 
   useEffect(() => {
     let ticking = false
@@ -32,7 +54,7 @@ function Navbar() {
       if (getHeroProgress() >= HERO_REVEAL_AT) {
         revealed = true
         window.removeEventListener('scroll', onScroll)
-        timeoutId = setTimeout(() => setIsRevealed(true), 900)
+        timeoutId = setTimeout(() => setIsRevealed(true), 300)
       }
     }
 
@@ -56,6 +78,7 @@ function Navbar() {
 
     const observer = new IntersectionObserver(
       (entries) => {
+        if (isNavigatingRef.current) return
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setActiveHref(`#${entry.target.id}`)
@@ -88,11 +111,20 @@ function Navbar() {
   const scrollToContact = () => {
     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
     setActiveHref('#contact')
+    beginNavGuard()
   }
 
   return (
     <header className={`navbar ${isRevealed ? 'navbar--revealed' : ''}`}>
-      <a href="#home" className="navbar__brand" onClick={() => setIsOpen(false)}>
+      <a
+        href="#home"
+        className="navbar__brand"
+        onClick={() => {
+          setActiveHref('#home')
+          beginNavGuard()
+          setIsOpen(false)
+        }}
+      >
         <img src={logo} alt="Synfolix" className="navbar__logo" />
       </a>
 
@@ -107,6 +139,7 @@ function Navbar() {
             className={`navbar__link ${activeHref === link.href ? 'navbar__link--active' : ''}`}
             onClick={() => {
               setActiveHref(link.href)
+              beginNavGuard()
               setIsOpen(false)
             }}
           >

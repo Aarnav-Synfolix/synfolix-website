@@ -1,3 +1,4 @@
+import { useRevealOnScroll } from '../../hooks/useRevealOnScroll'
 import './DevelopmentProcess.css'
 
 const PROCESS_STEPS = [
@@ -10,8 +11,10 @@ const PROCESS_STEPS = [
 ]
 
 function DevelopmentProcess() {
+  const [ref, isVisible] = useRevealOnScroll()
+
   return (
-    <section className="process">
+    <section ref={ref} className={`process reveal-left ${isVisible ? 'reveal-left--visible' : ''}`}>
       <div className="container">
         <div className="process__intro">
           <h2 className="process__heading">Development Process</h2>

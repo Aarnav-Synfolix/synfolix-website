@@ -1,3 +1,4 @@
+import { useRevealOnScroll } from '../../hooks/useRevealOnScroll'
 import './CaseStudies.css'
 
 const CASE_STUDIES = [
@@ -43,8 +44,10 @@ const CASE_STUDIES = [
 ]
 
 function CaseStudies() {
+  const [ref, isVisible] = useRevealOnScroll()
+
   return (
-    <section className="cases" id="our-work">
+    <section ref={ref} className={`cases reveal-left ${isVisible ? 'reveal-left--visible' : ''}`} id="our-work">
       <div className="container">
         <div className="cases__intro">
           <h2 className="cases__heading">Our Work</h2>

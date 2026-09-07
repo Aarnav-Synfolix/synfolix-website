@@ -1,3 +1,4 @@
+import { useRevealOnScroll } from '../../hooks/useRevealOnScroll'
 import './About.css'
 
 const STATS = [
@@ -7,8 +8,10 @@ const STATS = [
 ]
 
 function About() {
+  const [ref, isVisible] = useRevealOnScroll()
+
   return (
-    <section className="about" id="about">
+    <section ref={ref} className={`about reveal-left ${isVisible ? 'reveal-left--visible' : ''}`} id="about">
       <div className="container">
         <div className="about__intro">
           <h2 className="about__heading">About Synfolix</h2>
