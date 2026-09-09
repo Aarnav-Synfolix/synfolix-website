@@ -40,7 +40,7 @@ function BuildWithSynfolix() {
         </div>
 
         <div className="build__cta-row">
-          <a href="#" className="build__cta">
+          <a href="#" className="build__cta" onClick={(event) => event.preventDefault()}>
             Tell Us What You&rsquo;re Building
           </a>
         </div>

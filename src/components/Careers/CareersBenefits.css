@@ -1,0 +1,49 @@
+.careers-benefits {
+  padding: 5rem 0;
+  background: var(--color-white);
+}
+
+.careers-benefits__heading {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-navy);
+  margin-bottom: 2.5rem;
+}
+
+.careers-benefits__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.careers-benefits__card {
+  padding: 1.75rem;
+  background: var(--color-mist);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+}
+
+.careers-benefits__card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-navy);
+  margin-bottom: 0.6rem;
+}
+
+.careers-benefits__card-text {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--color-slate);
+}
+
+@media (max-width: 900px) {
+  .careers-benefits__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .careers-benefits__grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -23,7 +23,7 @@ function Industries() {
 
         <div className="industries__grid">
           {visibleIndustries.map((industry) => (
-            <a key={industry} href="#" className="industry-card">
+            <a key={industry} href="#" className="industry-card" onClick={(event) => event.preventDefault()}>
               <span className="industry-card__name">{industry}</span>
               <span className="industry-card__arrow">→</span>
             </a>

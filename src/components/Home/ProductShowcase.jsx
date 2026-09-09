@@ -79,10 +79,10 @@ function ProductShowcase() {
               </ul>
 
               <div className="product-card__actions">
-                <a href="#" className="product-card__link">
+                <a href="#" className="product-card__link" onClick={(event) => event.preventDefault()}>
                   View Product →
                 </a>
-                <a href="#" className="product-card__demo">
+                <a href="#" className="product-card__demo" onClick={(event) => event.preventDefault()}>
                   Request Demo
                 </a>
               </div>

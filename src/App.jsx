@@ -1,32 +1,17 @@
+import { Route, Routes } from 'react-router-dom'
 import Navbar from './components/Navbar'
-import Hero from './components/Home/Hero'
-import WhatIsSynfolix from './components/Home/WhatIsSynfolix'
-import ProductShowcase from './components/Home/ProductShowcase'
-import BuildWithSynfolix from './components/Home/BuildWithSynfolix'
-import Industries from './components/Home/Industries'
-import TechCapabilities from './components/Home/TechCapabilities'
-import CaseStudies from './components/Home/CaseStudies'
-import WhySynfolix from './components/Home/WhySynfolix'
-import DevelopmentProcess from './components/Home/DevelopmentProcess'
-import About from './components/Home/About'
-import Contact from './components/Home/Contact'
 import Footer from './components/Footer'
+import Home from './pages/Home'
+import Careers from './pages/Careers'
 
 function App() {
   return (
     <div className="app">
       <Navbar />
-      <Hero />
-      <WhatIsSynfolix />
-      <ProductShowcase />
-      <BuildWithSynfolix />
-      <Industries />
-      <TechCapabilities />
-      <CaseStudies />
-      <WhySynfolix />
-      <DevelopmentProcess />
-      <About />
-      <Contact />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/careers" element={<Careers />} />
+      </Routes>
       <Footer />
     </div>
   )

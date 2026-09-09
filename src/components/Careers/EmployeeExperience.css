@@ -1,0 +1,43 @@
+.employee-experience {
+  padding: 5rem 0;
+  background: var(--color-mist);
+}
+
+.employee-experience__heading {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-navy);
+  margin-bottom: 2.5rem;
+}
+
+.employee-experience__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.employee-experience__card {
+  padding: 1.75rem;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+}
+
+.employee-experience__card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-navy);
+  margin-bottom: 0.6rem;
+}
+
+.employee-experience__card-text {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--color-slate);
+}
+
+@media (max-width: 600px) {
+  .employee-experience__grid {
+    grid-template-columns: 1fr;
+  }
+}

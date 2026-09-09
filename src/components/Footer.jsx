@@ -1,64 +1,85 @@
+import logo from '../assets/logo3.png'
+import { useInViewOnce } from '../hooks/useInViewOnce'
 import './Footer.css'
 
 const FOOTER_SECTIONS = [
   {
     title: 'Company',
-    links: ['About', 'Careers', 'Contact'],
+    links: [{ label: 'About' }, { label: 'Careers', href: '/careers' }, { label: 'Contact' }],
   },
   {
     title: 'Products',
-    links: ['All Products', 'Product Categories'],
+    links: [{ label: 'All Products' }, { label: 'Product Categories' }],
   },
   {
     title: 'Solutions',
     links: [
-      'Custom Software',
-      'SaaS Development',
-      'Mobile Development',
-      'Web Development',
-      'AI Solutions',
-      'Business Automation',
+      { label: 'Custom Software' },
+      { label: 'SaaS Development' },
+      { label: 'Mobile Development' },
+      { label: 'Web Development' },
+      { label: 'AI Solutions' },
+      { label: 'Business Automation' },
     ],
   },
   {
     title: 'Industries',
-    links: ['Healthcare', 'Legal', 'Education'],
+    links: [{ label: 'Healthcare' }, { label: 'Legal' }, { label: 'Education' }],
   },
   {
     title: 'Resources',
-    links: ['Case Studies', 'Blog', 'Insights'],
+    links: [{ label: 'Case Studies' }, { label: 'Blog' }, { label: 'Insights' }],
   },
   {
     title: 'Legal',
-    links: ['Privacy Policy', 'Terms & Conditions', 'Cookie Policy'],
+    links: [{ label: 'Privacy Policy' }, { label: 'Terms & Conditions' }, { label: 'Cookie Policy' }],
   },
 ]
 
 function Footer() {
+  const [ref, isVisible] = useInViewOnce()
+
   return (
-    <footer className="footer">
-      <div className="footer__columns">
-        {FOOTER_SECTIONS.map((section) => (
-          <div key={section.title} className="footer__column">
-            <h3 className="footer__title">{section.title}</h3>
-            <ul className="footer__list">
-              {section.links.map((link) => (
-                <li key={link}>
-                  <a href="#" className="footer__link">
-                    {link}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+    <footer ref={ref} className="footer">
+      <span className="footer__glow" aria-hidden="true" />
+
+      <div className="footer__inner">
+        <div className={`footer__brand-col footer__reveal ${isVisible ? 'footer__reveal--visible' : ''}`}>
+          <img src={logo} alt="Synfolix" className="footer__logo" />
+          <p className="footer__tagline">Digital products and platforms built by Synfolix.</p>
+        </div>
+
+        <div className="footer__columns">
+          {FOOTER_SECTIONS.map((section) => (
+            <div
+              key={section.title}
+              className={`footer__column footer__reveal ${isVisible ? 'footer__reveal--visible' : ''}`}
+            >
+              <h3 className="footer__title">{section.title}</h3>
+              <ul className="footer__list">
+                {section.links.map((link) => (
+                  <li key={link.label}>
+                    {link.href ? (
+                      <a href={link.href} className="footer__link">
+                        {link.label}
+                      </a>
+                    ) : (
+                      <a href="#" className="footer__link" onClick={(event) => event.preventDefault()}>
+                        {link.label}
+                      </a>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
       </div>
 
+      <div className="footer__divider" />
+
       <div className="footer__bottom">
-        <span className="footer__brand">Synfolix</span>
-        <span className="footer__copyright">
-          © {new Date().getFullYear()} Synfolix. All rights reserved.
-        </span>
+        <span className="footer__copyright">© {new Date().getFullYear()} Synfolix. All rights reserved.</span>
       </div>
     </footer>
   )

@@ -41,17 +41,23 @@ synfolix-website/
 ├── package.json
 ├── vite.config.js
 ├── src/
-│   ├── main.jsx              — forces scrollRestoration:'manual' + scrollTo(0,0) on load (see below)
+│   ├── main.jsx               — plain ReactDOM render, nothing intro-related (see below)
 │   ├── App.jsx               — composes Navbar + all Home sections + Footer, in order
 │   ├── index.css             — global reset, :root brand color variables, .container, smooth-scroll
 │   ├── assets/
 │   │   ├── logo.png          — Synfolix logo; used by Navbar
-│   │   └── logo2.png         — same mark, different export; used by the Hero LogoIntro animation
+│   │   ├── logo2.png         — same mark, different export; used by the Hero LogoIntro animation
+│   │   └── logo3.png         — same mark, light-on-dark export; used by Footer (dark background)
 │   ├── utils/
-│   │   └── heroScroll.js     — shared scroll-progress math for the Hero intro (see below)
+│   │   └── introSequence.js  — shared timer-based intro sequence + reveal signal (see below)
+│   ├── hooks/
+│   │   ├── useIntroRevealed.js   — subscribes to introSequence's reveal signal
+│   │   ├── useRevealOnScroll.js  — synced pop-in reveal used by all Home sections (see below)
+│   │   └── useInViewOnce.js      — generic one-time IntersectionObserver reveal; only Footer uses
+│   │                               it currently (see "Footer" below)
 │   └── components/
 │       ├── Navbar.jsx / .css        — shared across all pages
-│       ├── Footer.jsx / .css        — shared across all pages
+│       ├── Footer.jsx / .css        — shared across all pages (see "Footer" below)
 │       ├── hoverButton/
 │       │   └── hoverButton.jsx / .css   — InteractiveHoverButton (named export), used for the
 │       │                                  navbar CTA; dot-expand/label-swap hover effect
@@ -93,89 +99,151 @@ as with hoverButton's arrow). `hoverButton.jsx` is the reference example of this
 ## Hero intro animation (the most custom/fragile part of this codebase)
 
 When the homepage loads, there's no navbar and no visible Hero copy at first — just a big logo
-sitting low in a white full-bleed frame. Scrolling drives a multi-phase, pinned scroll-scene
-before the "normal" site (navbar + Hero headline/CTA/visual) appears. This was built iteratively
-over several rounds of user feedback (including one reverted attempt), so the current state is
-deliberate — read this before touching any of the three files involved.
+sitting low in a white full-bleed frame. This used to be a scroll-scrubbed, pinned scroll-scene
+(scroll position drove the logo reveal); it was **rewritten to be a self-playing, timer-based
+animation instead** — the logo animates in on its own on a fixed schedule, with no scroll-down cue
+and no dependency on scroll position at all. Read this before touching any of the four files
+involved.
 
-**Files involved:** `utils/heroScroll.js` (shared timing/constants), `Home/LogoIntro.jsx`/`.css`
-(the logo scene), `Home/Hero.jsx`/`.css` (the pin container + the headline/CTA/visual content that
-pops in), `Navbar.jsx`/`.css` (the header, which reveals on a delay tied to the same timeline).
+**Files involved:** `utils/introSequence.js` (shared timer/state singleton), `hooks/useIntroRevealed.js`
+(the React hook every consumer subscribes through), `Home/LogoIntro.jsx`/`.css` (the logo scene),
+`Home/Hero.jsx`/`.css` (the headline/CTA/visual content that pops in), `Navbar.jsx`/`.css` (the
+header, which reveals on a small extra delay after the same signal).
 
-**`utils/heroScroll.js`** is the single source of truth all three consumers import from — never
-duplicate these numbers/formula locally:
-- `HERO_PIN_VH = 300` — total height (in vh) of `.hero__pin-wrapper`. This is **permanently fixed**,
-  not dynamically resized (see "Reverted attempt" below).
-- `LOGO_REVEAL_END = 0.5` — fraction of the scroll-progress at which the logo finishes rising/fading
-  in. Progress keeps advancing from 0.5 to 1.0 while the logo just sits there, fully visible and
-  still (the "hold" phase the user asked for, so it doesn't feel rushed).
-- `HERO_REVEAL_AT = 1` — the single unified trigger point (full pin exhaustion) at which BOTH the
-  Hero content pop-in and the navbar reveal fire. They used to be separate breakpoints
-  (`HEADER_DROP_AT`/`CONTENT_WIPE_START`) — consolidated into one shared constant per user request
-  ("only when it pops in will the header show up").
-- `getHeroPinDistance()` = `(HERO_PIN_VH - 100) / 100 * window.innerHeight` — the actual scrollable
-  px distance while `.hero__pin-frame` (sticky, 100vh) stays pinned.
-- `getHeroProgress()` = `scrollY / distance`, clamped 0–1.
+**`utils/introSequence.js`** is a plain module-level singleton (not a React hook itself) — the
+single source of truth for the whole sequence:
+- `LOGO_ANIMATION_MS = 1100` — how long the logo's CSS transition takes to animate in. `LogoIntro.jsx`
+  reads this constant and applies it as an inline `transitionDuration` style, so the JS timer and
+  the CSS animation can never drift out of sync with each other.
+- `HOLD_MS = 700` — extra pause after the logo finishes animating, before the reveal fires.
+- `NAVBAR_EXTRA_DELAY_MS = 300` — additional delay Navbar waits after the shared reveal signal
+  before it drops down (kept from the old scroll-driven version, where this was tuned down over
+  several rounds: 900ms → 500ms → 300ms, the last two steps by the user directly editing the
+  file — if asked to "reduce the time" again, this is still the constant to touch).
+- `startIntroSequence()` — idempotent (guarded by an internal `started` flag), called once by
+  `LogoIntro` on mount. Locks page scroll (`document.body.style.overflow = 'hidden'`) and schedules
+  `reveal()` via `setTimeout(LOGO_ANIMATION_MS + HOLD_MS)`. If `prefers-reduced-motion` is set, it
+  skips straight to `reveal()` with no scroll lock and no delay.
+- `reveal()` — fires once (guarded by an internal `isRevealed` flag), unlocks page scroll, and
+  notifies every subscriber via a simple listener `Set`. One-way: once fired, it can never un-fire.
+- `getIntroRevealed()` / `subscribeIntroReveal(listener)` — read the current state / subscribe to
+  the one-time flip, used by `useIntroRevealed.js`.
 
-**`LogoIntro.jsx`** renders inside `Hero`'s pinned frame, behind the reveal panel (z-index 1). Its
-own scroll listener (rAF-throttled) computes `reveal = min(getHeroProgress() / LOGO_REVEAL_END, 1)`
-and drives the logo's `transform`/`opacity` directly via a ref (not React state — this runs every
-scroll frame, so state would be wasteful). Logo starts at `translateY(45vh) scale(0.85)` opacity
-`0.25` (genuinely below/faded, not just flex-bottom-aligned — an earlier version only *looked*
-stuck at the bottom because it relied on flexbox alignment instead of a real off-frame starting
-transform) and animates to `translateY(0) scale(1)` opacity `1`. A "Scroll" cue with a bouncing
-chevron fades out over the first 8% of progress. Background is **white** (`#ffffff`) — it was navy,
-then near-black charcoal, before landing on white; the logo PNGs have a transparent (not opaque)
-background, so a dark backdrop made the logo's own navy cap/wordmark blend into it. The cue's color
-was flipped from light-on-dark to `rgba(11, 41, 66, 0.5)` to match the white background. Respects
-`prefers-reduced-motion` (skips straight to the fully-revealed static state).
+**`hooks/useIntroRevealed.js`** is the thin React wrapper: `useState(getIntroRevealed)` seeded from
+the module's current value, subscribing via `subscribeIntroReveal` only while still `false` (once
+`true`, it unsubscribes — nothing left to listen for since it's one-way). Every component that
+needs to react to the intro finishing (`Hero`, `Navbar`, and — via `useRevealOnScroll` — all 10
+other Home sections) calls this same hook, so they all flip in the same render pass.
 
-**`Hero.jsx`** structure: `.hero__pin-wrapper` (height: `${HERO_PIN_VH}vh`, fixed forever) contains
-`.hero__pin-frame` (`position: sticky; top:0; height:100vh/100svh`, stays glued to the viewport for
-the whole scroll run) which contains `<LogoIntro />` and `.hero__reveal` (the actual headline/
-subtext/CTAs/product-visual content, z-index 2, on top). `.hero__reveal` starts at
-`transform: translateX(-100%)` and has a **fixed-duration CSS transition**
-(`transform 0.7s cubic-bezier(0.16,1,0.3,1)`) to `translateX(0)` — this used to be scroll-scrubbed
-(sliding in proportionally as you scrolled) but the user asked for a one-time "pop" instead once the
-logo phase finishes, not a continuous scrub. A one-way `isRevealed` boolean (React state, flips
-once, listener self-removes) drives the `.hero__reveal--visible` class — scrolling back up can
-never undo the pop, matching an explicit "not reverse scrollable" requirement. `.hero__nav-spacer`
-(72px, permanently rendered inside `.hero__reveal`) reserves space for the fixed navbar so Hero's
-own content doesn't sit underneath it once revealed.
+**`LogoIntro.jsx`** no longer has any scroll listener. On mount it calls `startIntroSequence()` and,
+one animation frame later, adds a `logo-intro__logo--in` class that triggers the CSS transition
+(added on the next frame, not synchronously, so the browser has painted the initial off-state first
+and the transition actually plays instead of snapping). Logo starts at `translateY(45vh)
+scale(0.85)` opacity `0.25` and animates to `translateY(0) scale(1)` opacity `1` over
+`LOGO_ANIMATION_MS`. No scroll-down cue anymore — it was removed along with the scroll dependency.
+Background is **white** (`#ffffff`) — the logo PNGs have a transparent background, and a dark
+backdrop made the logo's own navy cap/wordmark blend into it (this was true before the scroll→timer
+rewrite too, and still holds). Respects `prefers-reduced-motion` (skips the class-add entirely; CSS
+also forces the final static state under that media query as a second guard).
 
-**`Navbar.jsx`** switched from `position: sticky` (in-flow, reserves space) to `position: fixed`
-(reserves zero space) specifically so it can be fully hidden with no layout gap during the intro.
-Starts as `translateY(-100%)` (fully off-screen above, not just faded — the reveal is a "drop down"
-motion, explicitly NOT a fade: the user rejected an opacity-fade version). Its own scroll listener
-checks the same `getHeroProgress() >= HERO_REVEAL_AT`, and once true, waits **900ms** (`setTimeout`,
-cleared on unmount) before flipping `isRevealed` — so the header visibly drops in *after* the Hero
-content has already popped, not simultaneously. Transition is `transform 0.35s cubic-bezier(0.34,
-1.56, 0.64, 1)` (slight overshoot/bounce, tuned down from an initial 0.6s per "reduce the time it
-takes to drop down"). Also one-way, same pattern as Hero's `isRevealed`.
+**`Hero.jsx`** is now just `<section className="hero">` (`position: relative; height: 100vh/100svh;
+overflow: hidden;` — no more pin-wrapper/pin-frame, since nothing is scroll-pinned) containing
+`<LogoIntro />` and `.hero__reveal` (the headline/subtext/CTAs/product-visual content, z-index 2,
+on top). `.hero__reveal` starts at `transform: translateX(-100%)` and has a fixed-duration CSS
+transition (`transform 0.7s cubic-bezier(0.16,1,0.3,1)`) to `translateX(0)`, driven by
+`useIntroRevealed()` directly (no extra delay) — the one-time "pop" behavior is unchanged from
+before, just re-triggered by the timer signal instead of a scroll-progress threshold.
+`.hero__nav-spacer` (72px, inside `.hero__reveal`) still reserves space for the fixed navbar.
 
-**Reverted attempt — do not reintroduce without discussing tradeoffs first:** at one point,
-`Hero.jsx` dynamically shrank `.hero__pin-wrapper` from 300vh down to 100vh the moment `isRevealed`
-fired (to make the scrollbar/page length reflect only the real sections instead of permanently
-carrying the full animation's scroll distance), compensating `window.scrollTo` by the removed
-height so the visual position wouldn't jump. **This caused visible jumping/jankiness** and was
-reverted. Root cause: (1) `index.css`'s global `scroll-behavior: smooth` made the compensating
-`scrollTo` animate/glide instead of snapping instantly, and (2) the browser's own scroll momentum
-(trackpad/wheel inertia) actively fights any attempt to reposition scroll mid-flight — a known hard
-problem with dynamically resizing already-scrolled content. **Current accepted tradeoff:** the page
-permanently carries the full `HERO_PIN_VH` (300vh) of scrollable height for Hero, even long after
-the intro has played — same tradeoff big product sites with scroll-jacked heroes generally accept.
-If the "page feels too long" complaint resurfaces: option A is just to tune `HERO_PIN_VH` down
-(fixed, not dynamic); option B is bringing in a real scroll-animation library (GSAP ScrollTrigger /
-Lenis) built to handle pin+release+resize without this class of bug — not something to reattempt
-with raw scroll listeners.
+**`Navbar.jsx`** is unchanged in spirit: `position: fixed`, starts at `translateY(-100%)` (drop-down
+motion, not a fade), and waits `NAVBAR_EXTRA_DELAY_MS` (300ms) after `useIntroRevealed()` flips
+true before setting its own `isRevealed` — so the header still visibly drops in just after the
+Hero content has popped, not simultaneously. Only the trigger source changed (shared timer signal
+instead of its own scroll listener); the delay/transition values themselves are untouched.
 
-**Scroll restoration:** browsers restore the previous scroll position on reload by default
-(`history.scrollRestoration = 'auto'`). That broke the intro — reloading while scrolled down landed
-the page already past `HERO_REVEAL_AT`, skipping the animation, which read as "the animation isn't
-popping up" to the user. Fixed in `main.jsx`: sets `scrollRestoration = 'manual'` and forces
-`window.scrollTo(0, 0)` before the app renders, so **every reload always starts at the top and
-plays the full intro** — this is intentional, not an oversight, and matches what the user wants for
-a branded landing-page intro.
+**All 10 non-Hero Home sections still pop in on the exact same trigger as Hero and Navbar's
+pop-in step — see "Synced section reveal" below.** This behavior (introduced when the intro was
+still scroll-driven, so a fast scroller could never catch a section mid-animation) is preserved
+under the timer-based rewrite for the same reason: it's now trivially guaranteed, since every
+consumer shares the exact same one-time signal instead of independently polling scroll position.
+
+**Scroll lock:** while the intro is playing, `document.body.style.overflow` is set to `'hidden'` by
+`startIntroSequence()`, so the page cannot be scrolled at all until the logo animation + hold
+finish — the user confirmed this explicitly (as opposed to leaving scroll unlocked and letting the
+intro play as an overlay on top of an already-scrollable page).
+
+**Removed as part of the scroll→timer rewrite:** `utils/heroScroll.js` (scroll-progress math),
+`.hero__pin-wrapper`/`.hero__pin-frame` (sticky pin container — Hero is a normal 100vh section now,
+no longer carrying extra scroll height), the scroll-down chevron cue in `LogoIntro`, and the
+`main.jsx` `scrollRestoration = 'manual'` + forced `scrollTo(0,0)` hack (it existed only to defeat
+the browser restoring scroll position past the old trigger point on reload — irrelevant now that
+nothing depends on scroll position). The "permanently reserves 300vh of scroll height" tradeoff
+from the old design no longer applies at all.
+
+## Synced section reveal (`hooks/useRevealOnScroll.js`)
+
+All 10 non-Hero Home sections (WhatIsSynfolix, ProductShowcase, BuildWithSynfolix, Industries,
+TechCapabilities, CaseStudies, WhySynfolix, DevelopmentProcess, About, Contact) use this hook and
+share `index.css`'s `.reveal-left`/`.reveal-left--visible` utility classes (fade + slide in from
+the left, `translateX(-60px) → 0`, same `0.7s cubic-bezier(0.16,1,0.3,1)` curve as Hero's own
+`.hero__reveal`, just a smaller travel distance than Hero's full-panel `-100%` — repeating a
+full off-screen slide across 10 sections would tip into "excessive animations").
+
+The hook is now a thin wrapper around `useIntroRevealed()` — it does not have its own scroll logic
+at all (it never used real `IntersectionObserver`-per-section logic in the timer-based world; that
+was already removed back when the intro was still scroll-driven, for a "fast scroller" concern —
+see the git history / prior CLAUDE.md revisions if that context is needed again). It still returns
+`[ref, isVisible]` purely for a stable call signature across all 10 files — the `ref` isn't attached
+to any observer, don't be confused into thinking it drives anything. If asked to make sections
+reveal individually again (e.g. real per-section scroll-storytelling), that's a deliberate product
+change, not a bug fix — check with the user first.
+
+Footer does NOT use this hook — it wasn't part of the original section list this was applied to,
+and it has its own independent, genuinely scroll-into-view-triggered fade-in (see "Footer" below) —
+don't confuse the two.
+
+## Footer
+
+Rebuilt from a pasted TSX/Tailwind/Framer-Motion snippet (same conversion approach as
+`hoverButton.jsx` — strip TS, drop `cn()`/`@/lib/utils`/the `motion` import, hand-write plain CSS).
+Deliberately dropped from the source snippet: the "Social Links" column (no social links yet) and
+its placeholder Product/Company/Resources copy — this project's actual 6 link sections (Company,
+Products, Solutions, Industries, Resources, Legal) were kept as-is from the original Footer, just
+laid out in the new component's grid instead.
+
+**Layout:** a left brand column (`logo3.png` — a light-on-dark export of the mark, since Footer has
+always had a dark background, unlike Navbar's `logo.png` or LogoIntro's `logo2.png`) plus a tagline,
+next to a responsive grid of the 6 link columns (`repeat(6, 1fr)` down to `repeat(3, 1fr)` at
+900px, `repeat(2, 1fr)` at 600px — same breakpoints the old Footer used). Visual details carried
+over from the source snippet: rounded top corners, a soft top-center glow line, and a horizontal
+divider above the centered copyright bar.
+
+**Fade-in animation ("only happens once"):** this is a genuine one-time reveal-on-scroll-into-view,
+NOT tied to the Home intro-sequence signal (Footer was explicitly excluded from that — see "Synced
+section reveal" above). Implemented via a new generic hook, `hooks/useInViewOnce.js`
+(`IntersectionObserver`, `threshold: 0.15`, disconnects itself after the first intersection — true
+"once", unlike the old per-section approach that was rejected for the Home sections). The whole
+`<footer>` is the observed ref; the brand column and each of the 6 link columns share the same
+`isVisible` flag but get a staggered `transitionDelay` (`0.1 + index * 0.08`s) so they cascade in
+rather than popping together — reproducing the source snippet's `AnimatedContainer` stagger
+(`delay={0.1 + index * 0.1}`) without Framer Motion. The CSS reveal (`.footer__reveal` /
+`.footer__reveal--visible` in `Footer.css`) reproduces the snippet's blur+translateY+opacity
+combo (`blur(4px) → 0`, `translateY(-8px) → 0`, `opacity 0 → 1`, `0.8s`) and respects
+`prefers-reduced-motion` the same way every other animation in this codebase does.
+
+## Nav-click indicator guard
+
+Clicking a nav link that's far from the current scroll position (e.g. jumping from "Products" to
+"Contact") used to make the `.navbar__indicator` underline visibly flicker through every
+intermediate section's link while the browser's smooth-scroll animation passed near them (the
+`IntersectionObserver`-based scroll-spy was reacting live to transient intersections mid-transit).
+Fixed with a "navigating" guard in `Navbar.jsx`: `isNavigatingRef` + `navDebounceRef`. Clicking any
+nav link, the brand logo, or a CTA (`beginNavGuard()`) immediately sets `activeHref` to the
+destination and sets the guard flag, which makes the `IntersectionObserver` callback skip updating
+`activeHref` entirely while true. A separate scroll listener resets a 150ms debounce timer on every
+scroll event while the guard is active; once scrolling settles (150ms with no further scroll
+event), the flag clears and live scroll-spy resumes normally. This only suppresses updates during
+click-triggered navigation — manual scrolling still updates the indicator live throughout.
 
 ## Homepage sections (in render order, all in `App.jsx`)
 
@@ -201,8 +269,9 @@ the matching section on the same page. `scroll-behavior: smooth` and `scroll-mar
 - Fixed `height: 72px` (not padding-driven), so its size is stable regardless of child content —
   keep it that way; when asked to resize contents (logo, buttons), adjust the child's own
   height/padding, not the navbar's.
-- `position: fixed` (not sticky — see "Hero intro animation" above for why), hidden until the Hero
-  intro's `HERO_REVEAL_AT` trigger fires (+900ms delay), then drops down permanently (one-way).
+- `position: fixed` (not sticky — see "Hero intro animation" above for why), hidden until the intro
+  timer's shared reveal signal fires (+`NAVBAR_EXTRA_DELAY_MS`/300ms delay), then drops down
+  permanently (one-way).
 - Left: `<img>` logo (`src/assets/logo.png` — note: NOT `logo2.png`, which is the LogoIntro one —
   currently 50px tall) wrapped in a link to `#home`, replacing the old "Synfolix" text wordmark.
 - Center: nav links, centered via `flex:1` + `justify-content:center` on `.navbar__links`.
@@ -211,7 +280,9 @@ the matching section on the same page. `scroll-behavior: smooth` and `scroll-mar
   viewport, storing it as `activeHref`. A thin teal underline (`.navbar__indicator`, absolutely
   positioned, `position:relative` on `.navbar__links`) slides beneath the active link in real time
   via `offsetLeft`/`offsetWidth`, CSS-transitioned. Hidden on mobile (≤900px) since links stack
-  vertically there. Clicking a link sets `activeHref` immediately (doesn't wait for scroll).
+  vertically there. Clicking a link sets `activeHref` immediately (doesn't wait for scroll) and
+  triggers the "nav-click indicator guard" (see below) so it doesn't flicker through intermediate
+  sections while the browser's smooth-scroll passes near them.
 - Right: the CTA (`InteractiveHoverButton`, "Build With Synfolix") + hamburger toggle, grouped in
   `.navbar__actions`. CTA `onClick` calls a `scrollToContact()` helper (`scrollIntoView` on
   `#contact`) rather than using `href`, since the button isn't an anchor.
@@ -284,5 +355,3 @@ Two logo files exist with different consumers — see "Hero intro animation" abo
 - Brand colors applied to Navbar (and the intro cue) only, not yet the rest of the site.
 - No real content — all product/case-study/team/stat copy is placeholder.
 - `specularButton/` is unused dead code (kept intentionally) — depends on the `ogl` npm package.
-- Hero permanently reserves 300vh of scroll height even after the intro finishes playing — a
-  deliberate accepted tradeoff, not a bug (see "Reverted attempt" above).

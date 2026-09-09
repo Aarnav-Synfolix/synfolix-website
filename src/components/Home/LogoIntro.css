@@ -14,60 +14,26 @@
   width: auto;
   opacity: 0.25;
   transform: translateY(45vh) scale(0.85);
+  transition-property: opacity, transform;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity;
 }
 
-.logo-intro__cue {
-  position: absolute;
-  bottom: 3rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.9rem;
-  color: rgba(11, 41, 66, 0.5);
-}
-
-.logo-intro__cue-text {
-  font-size: 1.1rem;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-.logo-intro__chevron-wrap {
-  display: flex;
-  animation: logo-intro-bounce 1.6s ease-in-out infinite;
-}
-
-.logo-intro__chevron {
-  display: block;
-  width: 20px;
-  height: 20px;
-  border-right: 3px solid rgba(11, 41, 66, 0.5);
-  border-bottom: 3px solid rgba(11, 41, 66, 0.5);
-  transform: rotate(45deg);
-}
-
-@keyframes logo-intro-bounce {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(6px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .logo-intro__chevron-wrap {
-    animation: none;
-  }
+.logo-intro__logo--in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 @media (max-width: 600px) {
   .logo-intro__logo {
     height: clamp(160px, 32vh, 280px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-intro__logo {
+    transition: none;
+    opacity: 1;
+    transform: none;
   }
 }

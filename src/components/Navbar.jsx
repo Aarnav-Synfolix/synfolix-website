@@ -1,7 +1,9 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import logo from '../assets/logo.png'
 import { InteractiveHoverButton } from './hoverButton/hoverButton'
-import { getHeroProgress, HERO_REVEAL_AT } from '../utils/heroScroll'
+import { useIntroRevealed } from '../hooks/useIntroRevealed'
+import { NAVBAR_EXTRA_DELAY_MS } from '../utils/introSequence'
 import './Navbar.css'
 
 const NAV_LINKS = [
@@ -15,8 +17,11 @@ const NAV_LINKS = [
 ]
 
 function Navbar() {
+  const location = useLocation()
+  const isHome = location.pathname === '/'
   const [isOpen, setIsOpen] = useState(false)
   const [activeHref, setActiveHref] = useState('#home')
+  const isIntroRevealed = useIntroRevealed()
   const [isRevealed, setIsRevealed] = useState(false)
   const linkRefs = useRef({})
   const indicatorRef = useRef(null)
@@ -44,34 +49,17 @@ function Navbar() {
   }, [])
 
   useEffect(() => {
-    let ticking = false
-    let revealed = false
-    let timeoutId = null
-
-    const check = () => {
-      ticking = false
-      if (revealed) return
-      if (getHeroProgress() >= HERO_REVEAL_AT) {
-        revealed = true
-        window.removeEventListener('scroll', onScroll)
-        timeoutId = setTimeout(() => setIsRevealed(true), 300)
-      }
+    // The intro sequence only ever runs on the Home page (LogoIntro/Hero start
+    // it) — on any other route there's nothing to wait for, so show the navbar
+    // immediately instead of staying hidden forever.
+    if (!isHome) {
+      setIsRevealed(true)
+      return
     }
-
-    const onScroll = () => {
-      if (!ticking) {
-        ticking = true
-        window.requestAnimationFrame(check)
-      }
-    }
-
-    check()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      if (timeoutId) clearTimeout(timeoutId)
-    }
-  }, [])
+    if (!isIntroRevealed) return
+    const timeoutId = setTimeout(() => setIsRevealed(true), NAVBAR_EXTRA_DELAY_MS)
+    return () => clearTimeout(timeoutId)
+  }, [isHome, isIntroRevealed])
 
   useEffect(() => {
     const sections = NAV_LINKS.map((link) => document.getElementById(link.href.slice(1))).filter(Boolean)
@@ -109,6 +97,10 @@ function Navbar() {
   }, [activeHref])
 
   const scrollToContact = () => {
+    if (!isHome) {
+      window.location.href = '/#contact'
+      return
+    }
     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
     setActiveHref('#contact')
     beginNavGuard()
@@ -117,7 +109,7 @@ function Navbar() {
   return (
     <header className={`navbar ${isRevealed ? 'navbar--revealed' : ''}`}>
       <a
-        href="#home"
+        href="/#home"
         className="navbar__brand"
         onClick={() => {
           setActiveHref('#home')
@@ -132,7 +124,7 @@ function Navbar() {
         {NAV_LINKS.map((link) => (
           <a
             key={link.label}
-            href={link.href}
+            href={`/${link.href}`}
             ref={(el) => {
               linkRefs.current[link.href] = el
             }}

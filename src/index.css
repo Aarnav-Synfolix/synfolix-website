@@ -9,6 +9,20 @@
   --color-teal: #0f7c86;
   --color-teal-dark: #0b5c63;
   --color-white: #ffffff;
+
+  /* Neutral scale + swappable accent slot: navy is the fixed identity anchor,
+     --color-accent defaults to teal but is the one thing a given product/vertical
+     (Healthcare, Legal, Education, CRM, AI, Enterprise, ...) can override locally
+     without breaking brand recognition. */
+  --color-slate: #4b5d6b;
+  --color-mist: #eef2f5;
+  --color-border: #dbe2e8;
+  --color-accent: var(--color-teal);
+  --color-accent-dark: var(--color-teal-dark);
+
+  /* Lighter teal tint for text/foreground use on dark backgrounds (e.g. Hero's
+     GhostFibers scene), where --color-teal itself is too dark to read clearly. */
+  --color-teal-light: #5fd6dd;
 }
 
 html {

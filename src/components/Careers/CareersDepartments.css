@@ -1,0 +1,58 @@
+.careers-departments {
+  padding: 5rem 0;
+  background: var(--color-white);
+}
+
+.careers-departments__heading {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-navy);
+  margin-bottom: 2.5rem;
+}
+
+.careers-departments__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.careers-departments__card {
+  padding: 1.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+}
+
+.careers-departments__card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-navy);
+  margin-bottom: 0.6rem;
+}
+
+.careers-departments__card-text {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--color-slate);
+  margin-bottom: 1rem;
+}
+
+.careers-departments__card-count {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+@media (max-width: 900px) {
+  .careers-departments__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .careers-departments__grid {
+    grid-template-columns: 1fr;
+  }
+}
