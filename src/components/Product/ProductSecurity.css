@@ -1,0 +1,33 @@
+.product-security {
+  padding: 6rem 0;
+  background: var(--color-white);
+}
+
+.product-security__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.product-security__card {
+  padding: 1.75rem;
+}
+
+.product-security__title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-navy);
+  margin-bottom: 0.6rem;
+}
+
+.product-security__description {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--color-slate);
+}
+
+@media (max-width: 600px) {
+  .product-security__grid {
+    grid-template-columns: 1fr;
+  }
+}

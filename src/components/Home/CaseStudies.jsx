@@ -5,7 +5,6 @@ const CASE_STUDIES = [
   {
     client: 'Regional Hospital Network',
     industry: 'Healthcare',
-    accent: 'indigo',
     problem: 'Manual patient admissions and billing were causing long wait times and revenue leakage.',
     approach: 'Mapped the full patient journey across staff, doctors and billing to design a unified workflow.',
     solution: 'A custom HMS platform covering admissions, prescriptions, billing and discharge in one system.',
@@ -18,7 +17,6 @@ const CASE_STUDIES = [
   {
     client: 'Multi-Practice Law Firm',
     industry: 'Legal',
-    accent: 'amber',
     problem: 'Case files, deadlines and client communication were scattered across emails and spreadsheets.',
     approach: 'Consolidated firm workflows into a single source of truth for cases, documents and deadlines.',
     solution: 'A case management platform with a secure client portal and automated deadline tracking.',
@@ -31,7 +29,6 @@ const CASE_STUDIES = [
   {
     client: 'National Retail Chain',
     industry: 'Retail',
-    accent: 'emerald',
     problem: 'Disconnected inventory and sales data made demand forecasting unreliable.',
     approach: 'Built a data pipeline connecting store, warehouse and sales systems into one analytics layer.',
     solution: 'A custom analytics dashboard with predictive restocking and real-time sales visibility.',
@@ -47,20 +44,25 @@ function CaseStudies() {
   const [ref, isVisible] = useRevealOnScroll()
 
   return (
-    <section ref={ref} className={`cases reveal-left ${isVisible ? 'reveal-left--visible' : ''}`} id="our-work">
+    <section ref={ref} className={`cases blur-fade ${isVisible ? 'blur-fade--visible' : ''}`} id="our-work">
       <div className="container">
-        <div className="cases__intro">
-          <h2 className="cases__heading">Our Work</h2>
-          <p className="cases__text">
+        <div className="section-intro">
+          <span className="section-eyebrow">Our Work</span>
+          <h2 className="section-heading">Real problems, turned into working software.</h2>
+          <p className="section-text">
             A look at how Synfolix partners with businesses to turn real problems into working
             software.
           </p>
         </div>
 
         <div className="cases__list">
-          {CASE_STUDIES.map((study) => (
-            <article key={study.client} className="case-card">
-              <div className={`case-card__panel case-card__panel--${study.accent}`}>
+          {CASE_STUDIES.map((study, index) => (
+            <article
+              key={study.client}
+              className={`case-card card card--interactive blur-fade ${isVisible ? 'blur-fade--visible' : ''}`}
+              style={{ transitionDelay: `${0.1 + index * 0.12}s` }}
+            >
+              <div className="case-card__panel">
                 <span className="case-card__industry">{study.industry}</span>
                 <div className="case-card__outcomes">
                   {study.outcomes.map((outcome) => (

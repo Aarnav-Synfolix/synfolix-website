@@ -28,13 +28,22 @@ function WhySynfolix() {
   const [ref, isVisible] = useRevealOnScroll()
 
   return (
-    <section ref={ref} className={`why reveal-left ${isVisible ? 'reveal-left--visible' : ''}`}>
+    <section ref={ref} className={`why blur-fade ${isVisible ? 'blur-fade--visible' : ''}`}>
       <div className="container">
-        <h2 className="why__heading">Why Synfolix?</h2>
+        <div className="section-intro why__intro">
+          <span className="section-eyebrow">Why Synfolix</span>
+          <h2 className="section-heading">
+            Five reasons it <span className="gradient-text">holds up.</span>
+          </h2>
+        </div>
 
         <div className="why__grid">
           {PILLARS.map((pillar, index) => (
-            <div key={pillar.title} className="why-card">
+            <div
+              key={pillar.title}
+              className={`why-card card blur-fade ${isVisible ? 'blur-fade--visible' : ''}`}
+              style={{ transitionDelay: `${0.08 * index}s` }}
+            >
               <span className="why-card__index">{String(index + 1).padStart(2, '0')}</span>
               <h3 className="why-card__title">{pillar.title}</h3>
               <p className="why-card__description">{pillar.description}</p>

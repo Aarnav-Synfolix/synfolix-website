@@ -59,3 +59,185 @@ section[id] {
     transition: none;
   }
 }
+
+/* Per-card stagger reveal — pair with an inline `transitionDelay` set from the
+   card's index so a grid settles in one after another instead of as one block. */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-up--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-up {
+    transition: none;
+  }
+}
+
+/* One-time animated gradient sweep across text — used exactly once sitewide
+   (WhySynfolix) as a signature moment, not a general-purpose utility. */
+.gradient-text {
+  background: linear-gradient(90deg, var(--color-navy) 0%, var(--color-accent) 50%, var(--color-navy) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-sweep 6s ease-in-out infinite;
+}
+
+@keyframes gradient-sweep {
+  0% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+  100% {
+    background-position: 0% center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gradient-text {
+    animation: none;
+    background: none;
+    -webkit-background-clip: initial;
+    background-clip: initial;
+    color: var(--color-navy);
+  }
+}
+
+/* Shared section typography scale — bold/SaaS-modern: large, tight-tracked
+   headings, left-aligned by default (not the centered-template look). Every
+   section's intro block uses these three classes instead of redeclaring its
+   own font-size/color, so bumping the scale here changes the whole site. */
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(15, 124, 134, 0.08);
+  border: 1px solid rgba(15, 124, 134, 0.2);
+  color: var(--color-teal-dark);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+}
+
+.section-heading {
+  font-size: clamp(2rem, 1.5rem + 2.2vw, 3.25rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--color-navy);
+  margin-bottom: 1.25rem;
+}
+
+.section-intro {
+  max-width: 40rem;
+  margin-bottom: 3.5rem;
+}
+
+.section-text {
+  font-size: 1.1rem;
+  line-height: 1.65;
+  color: var(--color-slate);
+}
+
+/* Decorative soft-glow accent — position/size per usage, sparingly (one per
+   section at most). Needs `position: relative` + `overflow: hidden` (or
+   z-index-layered content) on the parent. */
+.glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(15, 124, 134, 0.16), transparent 70%);
+  filter: blur(50px);
+  pointer-events: none;
+  /* Negative z-index so it paints behind ordinary in-flow content without
+     needing every section to also promote its content to a stacking context. */
+  z-index: -1;
+}
+
+/* Shared card surface. `.card` alone is for informational content — a subtle
+   border/shadow shift on hover, no lift (a lift would wrongly imply the whole
+   card is clickable). `.card--interactive` adds that lift + a stronger shadow,
+   and is only for cards that contain a real link/action (ProductShowcase,
+   Industries). */
+.card {
+  position: relative;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+  border-color: rgba(15, 124, 134, 0.4);
+  box-shadow: 0 8px 24px rgba(11, 41, 66, 0.06);
+}
+
+.card--interactive {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card--interactive:hover {
+  transform: translateY(-6px);
+  border-color: var(--color-accent);
+  box-shadow: 0 24px 48px rgba(11, 41, 66, 0.14);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .card--interactive {
+    transition: none;
+  }
+
+  .card--interactive:hover {
+    transform: none;
+  }
+}
+
+/* Blur + fade reveal — same treatment Footer uses. Pair with an inline
+   `transitionDelay` for staggered items. */
+.blur-fade {
+  opacity: 0;
+  transform: translateY(-20px);
+  filter: blur(4px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.blur-fade--visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blur-fade {
+    transition: none;
+  }
+}
+
+/* Shared label/tag chip — used instead of per-item accent-color variants so
+   categories (industries, products, capabilities) are told apart by their
+   label text, not by an arbitrary color-coding. */
+.tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  color: var(--color-teal-dark);
+  background: rgba(15, 124, 134, 0.08);
+}

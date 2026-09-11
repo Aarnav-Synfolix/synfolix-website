@@ -1,4 +1,5 @@
 import { useInViewOnce } from '../../hooks/useInViewOnce'
+import { SpotlightCard } from '../spotlightCard/spotlightCard'
 import './CareersWhy.css'
 
 const REASONS = [
@@ -26,18 +27,25 @@ function CareersWhy() {
   return (
     <section
       ref={ref}
-      className={`careers-why reveal-left ${isVisible ? 'reveal-left--visible' : ''}`}
+      className={`careers-why blur-fade ${isVisible ? 'blur-fade--visible' : ''}`}
       id="why-synfolix"
     >
       <div className="container">
-        <h2 className="careers-why__heading">Why Synfolix</h2>
+        <div className="section-intro">
+          <span className="section-eyebrow">Why Synfolix</span>
+          <h2 className="section-heading">A place to do work that matters.</h2>
+        </div>
 
         <div className="careers-why__grid">
-          {REASONS.map((reason) => (
-            <div key={reason.title} className="careers-why__card">
+          {REASONS.map((reason, index) => (
+            <SpotlightCard
+              key={reason.title}
+              className={`careers-why__card card blur-fade ${isVisible ? 'blur-fade--visible' : ''}`}
+              style={{ transitionDelay: `${0.08 * index}s` }}
+            >
               <h3 className="careers-why__card-title">{reason.title}</h3>
               <p className="careers-why__card-text">{reason.description}</p>
-            </div>
+            </SpotlightCard>
           ))}
         </div>
       </div>

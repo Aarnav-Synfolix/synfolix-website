@@ -1,0 +1,40 @@
+.product-cta {
+  padding: 6rem 0;
+  background: var(--color-navy);
+  color: var(--color-white);
+  text-align: center;
+}
+
+.product-cta__inner {
+  max-width: 34rem;
+  margin: 0 auto;
+}
+
+.product-cta__heading {
+  font-size: clamp(1.75rem, 1.4rem + 1.6vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.75rem;
+}
+
+.product-cta__text {
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 2rem;
+}
+
+.product-cta__button {
+  display: inline-block;
+  padding: 0.9rem 2.2rem;
+  background: var(--color-accent);
+  color: var(--color-white);
+  font-size: 0.95rem;
+  font-weight: 700;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.product-cta__button:hover {
+  background: var(--color-accent-dark);
+}

@@ -1,4 +1,5 @@
 import { useInViewOnce } from '../../hooks/useInViewOnce'
+import { SpotlightCard } from '../spotlightCard/spotlightCard'
 import './CareersBenefits.css'
 
 const BENEFITS = [
@@ -16,18 +17,25 @@ function CareersBenefits() {
   return (
     <section
       ref={ref}
-      className={`careers-benefits reveal-left ${isVisible ? 'reveal-left--visible' : ''}`}
+      className={`careers-benefits blur-fade ${isVisible ? 'blur-fade--visible' : ''}`}
       id="benefits"
     >
       <div className="container">
-        <h2 className="careers-benefits__heading">Benefits</h2>
+        <div className="section-intro">
+          <span className="section-eyebrow">Benefits</span>
+          <h2 className="section-heading">Taken care of, properly.</h2>
+        </div>
 
         <div className="careers-benefits__grid">
-          {BENEFITS.map((benefit) => (
-            <div key={benefit.title} className="careers-benefits__card">
+          {BENEFITS.map((benefit, index) => (
+            <SpotlightCard
+              key={benefit.title}
+              className={`careers-benefits__card card blur-fade ${isVisible ? 'blur-fade--visible' : ''}`}
+              style={{ transitionDelay: `${0.06 * index}s` }}
+            >
               <h3 className="careers-benefits__card-title">{benefit.title}</h3>
               <p className="careers-benefits__card-text">{benefit.description}</p>
-            </div>
+            </SpotlightCard>
           ))}
         </div>
       </div>

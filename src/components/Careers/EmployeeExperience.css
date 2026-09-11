@@ -1,13 +1,6 @@
 .employee-experience {
-  padding: 5rem 0;
+  padding: 7rem 0;
   background: var(--color-mist);
-}
-
-.employee-experience__heading {
-  font-size: 2rem;
-  font-weight: 800;
-  color: var(--color-navy);
-  margin-bottom: 2.5rem;
 }
 
 .employee-experience__grid {
@@ -18,9 +11,6 @@
 
 .employee-experience__card {
   padding: 1.75rem;
-  background: var(--color-white);
-  border: 1px solid var(--color-border);
-  border-radius: 16px;
 }
 
 .employee-experience__card-title {

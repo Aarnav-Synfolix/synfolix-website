@@ -1,0 +1,124 @@
+.product-hero {
+  padding: 9rem 0 5rem;
+  background: linear-gradient(180deg, #f9fafb 0%, #ffffff 100%);
+}
+
+.product-hero__inner {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.product-hero__name {
+  font-size: clamp(2.25rem, 1.6rem + 2.6vw, 3.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--color-navy);
+  margin-bottom: 0.75rem;
+}
+
+.product-hero__tagline {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-accent-dark);
+  margin-bottom: 1.25rem;
+}
+
+.product-hero__description {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--color-slate);
+  max-width: 34rem;
+  margin-bottom: 2rem;
+}
+
+.product-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.product-hero__cta {
+  padding: 0.9rem 2rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.product-hero__cta--primary {
+  background: var(--color-accent);
+  color: var(--color-white);
+}
+
+.product-hero__cta--primary:hover {
+  background: var(--color-accent-dark);
+}
+
+.product-hero__cta--secondary {
+  background: transparent;
+  color: var(--color-navy);
+  border: 1px solid var(--color-border);
+}
+
+.product-hero__cta--secondary:hover {
+  border-color: var(--color-navy);
+}
+
+.product-hero__visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-hero__mockup {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--color-navy);
+  box-shadow: 0 30px 60px -20px rgba(11, 41, 66, 0.4);
+}
+
+.product-hero__mockup-bar {
+  display: flex;
+  gap: 6px;
+  padding: 0.85rem 1rem;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.product-hero__mockup-bar span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.product-hero__mockup-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.product-hero__mockup-block {
+  display: block;
+  height: 14px;
+  border-radius: 5px;
+  background: var(--color-teal-light);
+  opacity: 0.5;
+  width: 100%;
+}
+
+.product-hero__mockup-block--short {
+  width: 55%;
+}
+
+@media (max-width: 900px) {
+  .product-hero__inner {
+    grid-template-columns: 1fr;
+  }
+}

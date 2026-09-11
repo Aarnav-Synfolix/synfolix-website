@@ -14,11 +14,12 @@ function DevelopmentProcess() {
   const [ref, isVisible] = useRevealOnScroll()
 
   return (
-    <section ref={ref} className={`process reveal-left ${isVisible ? 'reveal-left--visible' : ''}`}>
+    <section ref={ref} className={`process blur-fade ${isVisible ? 'blur-fade--visible' : ''}`}>
       <div className="container">
-        <div className="process__intro">
-          <h2 className="process__heading">Development Process</h2>
-          <p className="process__text">
+        <div className="section-intro">
+          <span className="section-eyebrow">How We Work</span>
+          <h2 className="section-heading">One lifecycle, start to finish.</h2>
+          <p className="section-text">
             A clear, repeatable lifecycle that takes an idea from first conversation to a product
             running at scale.
           </p>
@@ -26,8 +27,12 @@ function DevelopmentProcess() {
 
         <div className="process__row">
           {PROCESS_STEPS.map((step, index) => (
-            <div key={step.title} className="process-step">
-              <div className="process-step__card">
+            <div
+              key={step.title}
+              className={`process-step blur-fade ${isVisible ? 'blur-fade--visible' : ''}`}
+              style={{ transitionDelay: `${0.06 * index}s` }}
+            >
+              <div className="process-step__card card">
                 <span className="process-step__number">{String(index + 1).padStart(2, '0')}</span>
                 <h3 className="process-step__title">{step.title}</h3>
                 <p className="process-step__description">{step.description}</p>

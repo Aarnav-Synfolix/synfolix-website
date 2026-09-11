@@ -1,4 +1,5 @@
 import { useInViewOnce } from '../../hooks/useInViewOnce'
+import { SpotlightCard } from '../spotlightCard/spotlightCard'
 import './EmployeeExperience.css'
 
 const EXPERIENCE_POINTS = [
@@ -26,18 +27,25 @@ function EmployeeExperience() {
   return (
     <section
       ref={ref}
-      className={`employee-experience reveal-left ${isVisible ? 'reveal-left--visible' : ''}`}
+      className={`employee-experience blur-fade ${isVisible ? 'blur-fade--visible' : ''}`}
       id="employee-experience"
     >
       <div className="container">
-        <h2 className="employee-experience__heading">Employee Experience</h2>
+        <div className="section-intro">
+          <span className="section-eyebrow">Employee Experience</span>
+          <h2 className="section-heading">What day-to-day actually feels like.</h2>
+        </div>
 
         <div className="employee-experience__grid">
-          {EXPERIENCE_POINTS.map((point) => (
-            <div key={point.title} className="employee-experience__card">
+          {EXPERIENCE_POINTS.map((point, index) => (
+            <SpotlightCard
+              key={point.title}
+              className={`employee-experience__card card blur-fade ${isVisible ? 'blur-fade--visible' : ''}`}
+              style={{ transitionDelay: `${0.08 * index}s` }}
+            >
               <h3 className="employee-experience__card-title">{point.title}</h3>
               <p className="employee-experience__card-text">{point.description}</p>
-            </div>
+            </SpotlightCard>
           ))}
         </div>
       </div>

@@ -1,6 +1,7 @@
 .navbar {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   height: 72px;
   padding: 0 2rem;
   background: rgba(255, 255, 255, 0.8);
@@ -56,6 +57,27 @@
   align-items: center;
   gap: 1rem;
   flex-shrink: 0;
+}
+
+.navbar__left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-shrink: 0;
+}
+
+.navbar__back {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-navy);
+  opacity: 0.7;
+  text-decoration: none;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.navbar__back:hover {
+  opacity: 1;
+  color: var(--color-teal);
 }
 
 .navbar__cta--mobile {

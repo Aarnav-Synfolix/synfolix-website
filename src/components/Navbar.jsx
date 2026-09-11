@@ -62,6 +62,9 @@ function Navbar() {
   }, [isHome, isIntroRevealed])
 
   useEffect(() => {
+    // No section anchors exist outside the Home page, so there's nothing to spy on.
+    if (!isHome) return
+
     const sections = NAV_LINKS.map((link) => document.getElementById(link.href.slice(1))).filter(Boolean)
 
     const observer = new IntersectionObserver(
@@ -78,7 +81,7 @@ function Navbar() {
 
     sections.forEach((section) => observer.observe(section))
     return () => observer.disconnect()
-  }, [])
+  }, [isHome])
 
   useLayoutEffect(() => {
     const updateIndicator = () => {
@@ -104,6 +107,25 @@ function Navbar() {
     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
     setActiveHref('#contact')
     beginNavGuard()
+  }
+
+  if (!isHome) {
+    return (
+      <header className={`navbar ${isRevealed ? 'navbar--revealed' : ''}`}>
+        <div className="navbar__left">
+          <a href="/#home" className="navbar__brand">
+            <img src={logo} alt="Synfolix" className="navbar__logo" />
+          </a>
+          <a href="/" className="navbar__back">
+            ← Home
+          </a>
+        </div>
+
+        <div className="navbar__actions">
+          <InteractiveHoverButton onClick={scrollToContact}>Build With Synfolix</InteractiveHoverButton>
+        </div>
+      </header>
+    )
   }
 
   return (

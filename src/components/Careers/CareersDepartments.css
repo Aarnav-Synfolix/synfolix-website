@@ -1,13 +1,6 @@
 .careers-departments {
-  padding: 5rem 0;
+  padding: 7rem 0;
   background: var(--color-white);
-}
-
-.careers-departments__heading {
-  font-size: 2rem;
-  font-weight: 800;
-  color: var(--color-navy);
-  margin-bottom: 2.5rem;
 }
 
 .careers-departments__grid {
@@ -18,8 +11,6 @@
 
 .careers-departments__card {
   padding: 1.75rem;
-  border: 1px solid var(--color-border);
-  border-radius: 16px;
 }
 
 .careers-departments__card-title {

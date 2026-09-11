@@ -1,0 +1,33 @@
+.product-integrations {
+  padding: 6rem 0;
+  background: var(--color-mist);
+}
+
+.product-integrations__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.product-integrations__card {
+  padding: 1.75rem;
+}
+
+.product-integrations__title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-navy);
+  margin-bottom: 0.6rem;
+}
+
+.product-integrations__description {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--color-slate);
+}
+
+@media (max-width: 700px) {
+  .product-integrations__grid {
+    grid-template-columns: 1fr;
+  }
+}

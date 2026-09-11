@@ -1,25 +1,6 @@
 .process {
-  padding: 5rem 0;
-  background: #ffffff;
-}
-
-.process__intro {
-  max-width: 42rem;
-  margin: 0 auto 3rem;
-  text-align: center;
-}
-
-.process__heading {
-  font-size: 2.25rem;
-  font-weight: 800;
-  color: #111827;
-  margin-bottom: 1rem;
-}
-
-.process__text {
-  font-size: 1.05rem;
-  line-height: 1.65;
-  color: #4b5563;
+  padding: 7rem 0;
+  background: var(--color-white);
 }
 
 .process__row {
@@ -36,9 +17,6 @@
 
 .process-step__card {
   flex: 1;
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 14px;
   padding: 1.5rem 1.25rem;
   height: 100%;
 }
@@ -47,28 +25,28 @@
   display: block;
   font-size: 0.85rem;
   font-weight: 700;
-  color: #6366f1;
+  color: var(--color-accent);
   margin-bottom: 0.75rem;
 }
 
 .process-step__title {
   font-size: 1.05rem;
   font-weight: 700;
-  color: #111827;
+  color: var(--color-navy);
   margin-bottom: 0.5rem;
 }
 
 .process-step__description {
   font-size: 0.85rem;
   line-height: 1.5;
-  color: #4b5563;
+  color: var(--color-slate);
 }
 
 .process-step__arrow {
   flex-shrink: 0;
   padding: 0 0.6rem;
   font-size: 1.2rem;
-  color: #c7d2fe;
+  color: var(--color-accent);
 }
 
 @media (max-width: 1000px) {

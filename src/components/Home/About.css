@@ -1,39 +1,47 @@
 .about {
-  padding: 5rem 0;
-  background: #f9fafb;
+  padding: 7rem 0;
+  background: var(--color-navy);
+  color: var(--color-white);
 }
 
 .about__intro {
   max-width: 44rem;
-  margin: 0 auto 3rem;
+  margin-left: auto;
+  margin-right: auto;
   text-align: center;
 }
 
-.about__heading {
-  font-size: 2.25rem;
-  font-weight: 800;
-  color: #111827;
-  margin-bottom: 1rem;
+.about__intro .section-eyebrow {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: var(--color-teal-light);
 }
 
-.about__text {
-  font-size: 1.05rem;
-  line-height: 1.65;
-  color: #4b5563;
+.about__intro .section-heading {
+  color: var(--color-white);
+}
+
+.about__intro .section-text {
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .about__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
-  margin-bottom: 3rem;
+  margin-bottom: 3.5rem;
 }
 
 .about__card {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 14px;
   padding: 1.75rem;
+}
+
+/* Higher specificity than the shared `.card` rule (which sets the same
+   properties for a light background) so this reliably wins regardless of
+   CSS source order. */
+.about__card.card {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .about__label {
@@ -42,24 +50,34 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: #6366f1;
+  color: var(--color-teal-light);
   margin-bottom: 0.75rem;
 }
 
 .about__card p {
   font-size: 0.92rem;
   line-height: 1.6;
-  color: #374151;
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .about__stats {
+  position: relative;
   display: flex;
   justify-content: center;
-  gap: 3rem;
-  padding: 2rem 0;
-  border-top: 1px solid #e5e7eb;
-  border-bottom: 1px solid #e5e7eb;
+  gap: 4rem;
+  padding: 3rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   margin-bottom: 2.5rem;
+  overflow: hidden;
+}
+
+.about__stats-glow {
+  width: 420px;
+  height: 240px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .about__stat {
@@ -70,24 +88,26 @@
 }
 
 .about__stat-value {
-  font-size: 2rem;
+  font-size: clamp(2.5rem, 2rem + 2vw, 3.5rem);
   font-weight: 800;
-  color: #111827;
+  letter-spacing: -0.02em;
+  color: var(--color-teal-light);
+  font-variant-numeric: tabular-nums;
 }
 
 .about__stat-label {
-  font-size: 0.85rem;
-  color: #6b7280;
-  margin-top: 0.35rem;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 0.5rem;
 }
 
 .about__forward {
   max-width: 40rem;
   margin: 0 auto;
   text-align: center;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  color: #111827;
+  color: var(--color-white);
   line-height: 1.6;
 }
 
@@ -98,6 +118,6 @@
 
   .about__stats {
     flex-wrap: wrap;
-    gap: 2rem;
+    gap: 2.5rem;
   }
 }

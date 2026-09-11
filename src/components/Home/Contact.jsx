@@ -5,6 +5,11 @@ import './Contact.css'
 const INDUSTRIES = ['Healthcare', 'Legal', 'Education', 'Finance', 'Retail', 'Business', 'Startup', 'Enterprise', 'Other']
 const TIMELINES = ['ASAP', '1-3 months', '3-6 months', '6+ months', 'Not sure yet']
 
+// Grabbed directly from Google Maps (Share → Embed a map) for the exact pin —
+// swap this string if the pin ever needs to move.
+const MAP_SRC =
+  'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3805.395789427097!2d78.4817308!3d17.488610100000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb9b005c68b2ef%3A0x1c835b3e4602c58b!2sSynfolix%20Private%20limited!5e0!3m2!1sen!2sin!4v1789151028469!5m2!1sen!2sin'
+
 const INITIAL_FORM = {
   name: '',
   company: '',
@@ -33,7 +38,7 @@ function Contact() {
   }
 
   return (
-    <section ref={ref} className={`contact reveal-left ${isVisible ? 'reveal-left--visible' : ''}`} id="contact">
+    <section ref={ref} className={`contact blur-fade ${isVisible ? 'blur-fade--visible' : ''}`} id="contact">
       <div className="container">
         <div className="contact__card">
           <div className="contact__inner">
@@ -128,22 +133,24 @@ function Contact() {
             <div className="contact__info-col">
               <div className="contact__info-block">
                 <span className="contact__info-label">Email</span>
-                <a href="mailto:hello@synfolix.com" className="contact__info-value">
-                  hello@synfolix.com
+                <a href="mailto:synfolix@gmail.com" className="contact__info-value">
+                  synfolix@gmail.com
                 </a>
               </div>
               <div className="contact__info-block">
                 <span className="contact__info-label">Phone</span>
-                <a href="tel:+15550100100" className="contact__info-value">
-                  +1 (555) 010-0100
+                <a href="tel:+917386429115" className="contact__info-value">
+                  +91 73864 29115
+                </a>
+                <a href="tel:+917093013165" className="contact__info-value">
+                  +91 70930 13165
                 </a>
               </div>
               <div className="contact__info-block">
                 <span className="contact__info-label">Office</span>
                 <p className="contact__info-value">
-                  123 Market Street, Suite 400
-                  <br />
-                  San Francisco, CA 94105
+                  H, H, opp. Satya Sai Enclave Main Road, Swarnadhama Nagar, Old Bowenpally, Hyderabad, Secunderabad,
+                  Telangana 500011
                 </p>
               </div>
               <div className="contact__info-block">
@@ -153,6 +160,16 @@ function Contact() {
                   <a href="#" onClick={(event) => event.preventDefault()}>X / Twitter</a>
                   <a href="#" onClick={(event) => event.preventDefault()}>Instagram</a>
                 </div>
+              </div>
+
+              <div className="contact__map">
+                <iframe
+                  title="Synfolix office location"
+                  src={MAP_SRC}
+                  loading="lazy"
+                  allowFullScreen
+                  referrerPolicy="strict-origin-when-cross-origin"
+                />
               </div>
             </div>
           </div>

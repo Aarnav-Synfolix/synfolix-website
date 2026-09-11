@@ -1,0 +1,42 @@
+.spotlight-card {
+  --spot-x: 50%;
+  --spot-y: 50%;
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --lift: 0px;
+  transform: perspective(800px) translateY(var(--lift)) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+  transform-style: preserve-3d;
+}
+
+.spotlight-card:hover {
+  --lift: -4px;
+  border-color: var(--color-accent);
+  box-shadow: 0 20px 40px rgba(11, 41, 66, 0.12);
+}
+
+.spotlight-card__glow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(circle 220px at var(--spot-x) var(--spot-y), rgba(15, 124, 134, 0.14), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.spotlight-card:hover .spotlight-card__glow {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spotlight-card {
+    transition: none;
+    transform: none;
+  }
+
+  .spotlight-card__glow {
+    display: none;
+  }
+}

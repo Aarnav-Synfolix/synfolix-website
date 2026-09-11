@@ -1,4 +1,5 @@
 import { useInViewOnce } from '../../hooks/useInViewOnce'
+import { SpotlightCard } from '../spotlightCard/spotlightCard'
 import { DEPARTMENTS, JOBS } from '../../data/jobs'
 import './CareersDepartments.css'
 
@@ -16,23 +17,30 @@ function CareersDepartments() {
   return (
     <section
       ref={ref}
-      className={`careers-departments reveal-left ${isVisible ? 'reveal-left--visible' : ''}`}
+      className={`careers-departments blur-fade ${isVisible ? 'blur-fade--visible' : ''}`}
       id="departments"
     >
       <div className="container">
-        <h2 className="careers-departments__heading">Departments</h2>
+        <div className="section-intro">
+          <span className="section-eyebrow">Departments</span>
+          <h2 className="section-heading">Find where you fit.</h2>
+        </div>
 
         <div className="careers-departments__grid">
-          {DEPARTMENTS.map((department) => {
+          {DEPARTMENTS.map((department, index) => {
             const openCount = JOBS.filter((job) => job.department === department).length
             return (
-              <div key={department} className="careers-departments__card">
+              <SpotlightCard
+                key={department}
+                className={`careers-departments__card card blur-fade ${isVisible ? 'blur-fade--visible' : ''}`}
+                style={{ transitionDelay: `${0.08 * index}s` }}
+              >
                 <h3 className="careers-departments__card-title">{department}</h3>
                 <p className="careers-departments__card-text">{DEPARTMENT_BLURBS[department]}</p>
                 <span className="careers-departments__card-count">
                   {openCount > 0 ? `${openCount} open role${openCount > 1 ? 's' : ''}` : 'No open roles right now'}
                 </span>
-              </div>
+              </SpotlightCard>
             )
           })}
         </div>

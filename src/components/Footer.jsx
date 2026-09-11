@@ -44,7 +44,7 @@ function Footer() {
       <span className="footer__glow" aria-hidden="true" />
 
       <div className="footer__inner">
-        <div className={`footer__brand-col footer__reveal ${isVisible ? 'footer__reveal--visible' : ''}`}>
+        <div className={`footer__brand-col blur-fade ${isVisible ? 'blur-fade--visible' : ''}`}>
           <img src={logo} alt="Synfolix" className="footer__logo" />
           <p className="footer__tagline">Digital products and platforms built by Synfolix.</p>
         </div>
@@ -53,7 +53,7 @@ function Footer() {
           {FOOTER_SECTIONS.map((section) => (
             <div
               key={section.title}
-              className={`footer__column footer__reveal ${isVisible ? 'footer__reveal--visible' : ''}`}
+              className={`footer__column blur-fade ${isVisible ? 'blur-fade--visible' : ''}`}
             >
               <h3 className="footer__title">{section.title}</h3>
               <ul className="footer__list">

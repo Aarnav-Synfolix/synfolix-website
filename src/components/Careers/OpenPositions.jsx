@@ -14,12 +14,15 @@ function OpenPositions() {
   return (
     <section
       ref={ref}
-      className={`open-positions reveal-left ${isVisible ? 'reveal-left--visible' : ''}`}
+      className={`open-positions blur-fade ${isVisible ? 'blur-fade--visible' : ''}`}
       id="open-positions"
     >
       <div className="container">
         <div className="open-positions__header">
-          <h2 className="open-positions__heading">Open Positions</h2>
+          <div className="section-intro open-positions__intro">
+            <span className="section-eyebrow">Open Positions</span>
+            <h2 className="section-heading">Current openings.</h2>
+          </div>
 
           <select
             className="open-positions__filter"
@@ -39,8 +42,12 @@ function OpenPositions() {
           <p className="open-positions__empty">No open roles in this department right now — check back soon.</p>
         ) : (
           <div className="open-positions__list">
-            {visibleJobs.map((job) => (
-              <div key={job.id} className="job-card">
+            {visibleJobs.map((job, index) => (
+              <div
+                key={job.id}
+                className={`job-card card blur-fade ${isVisible ? 'blur-fade--visible' : ''}`}
+                style={{ transitionDelay: `${0.06 * index}s` }}
+              >
                 <div className="job-card__info">
                   <h3 className="job-card__title">{job.title}</h3>
                   <div className="job-card__meta">
@@ -49,10 +56,7 @@ function OpenPositions() {
                     <span>{job.type}</span>
                   </div>
                 </div>
-                <a
-                  href={`mailto:careers@synfolix.com?subject=${encodeURIComponent(`Application: ${job.title}`)}`}
-                  className="job-card__apply"
-                >
+                <a href="#" className="job-card__apply" onClick={(event) => event.preventDefault()}>
                   Apply
                 </a>
               </div>

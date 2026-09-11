@@ -1,11 +1,12 @@
 import { useRevealOnScroll } from '../../hooks/useRevealOnScroll'
+import { SpotlightCard } from '../spotlightCard/spotlightCard'
 import './ProductShowcase.css'
 
 const PRODUCTS = [
   {
-    name: 'Synfolix Health',
+    name: 'Synfolix HMS',
     industry: 'Healthcare',
-    accent: 'indigo',
+    href: '/products/synfolix-health',
     description:
       'An EHR and patient management platform that streamlines admissions, billing and clinical workflows for hospitals and clinics.',
     features: ['Patient & appointment management', 'Integrated billing', 'Prescription workflows', 'Role-based access'],
@@ -13,7 +14,6 @@ const PRODUCTS = [
   {
     name: 'Synfolix Legal',
     industry: 'Legal',
-    accent: 'amber',
     description:
       'A case management platform built for law firms to track cases, documents, deadlines and client communication in one place.',
     features: ['Case & document tracking', 'Deadline reminders', 'Client portal', 'Secure file storage'],
@@ -21,7 +21,6 @@ const PRODUCTS = [
   {
     name: 'Synfolix CRM',
     industry: 'CRM',
-    accent: 'emerald',
     description:
       'A customer relationship platform that helps sales and support teams manage leads, pipelines and conversations at scale.',
     features: ['Lead & pipeline tracking', 'Team collaboration', 'Automation workflows', 'Analytics dashboard'],
@@ -29,7 +28,6 @@ const PRODUCTS = [
   {
     name: 'Synfolix Learn',
     industry: 'Education',
-    accent: 'sky',
     description:
       'A learning management system for institutions to deliver courses, track progress and manage students and faculty.',
     features: ['Course & content management', 'Progress tracking', 'Attendance & grading', 'Parent/student portals'],
@@ -40,20 +38,26 @@ function ProductShowcase() {
   const [ref, isVisible] = useRevealOnScroll()
 
   return (
-    <section ref={ref} className={`showcase reveal-left ${isVisible ? 'reveal-left--visible' : ''}`} id="products">
+    <section ref={ref} className={`showcase blur-fade ${isVisible ? 'blur-fade--visible' : ''}`} id="products">
       <div className="container">
-        <div className="showcase__intro">
-          <h2 className="showcase__heading">Our Products</h2>
-          <p className="showcase__text">
-            Software Synfolix builds, owns and continuously improves — deployed across
-            Healthcare, Legal, CRM and Education.
+        <div className="section-intro">
+          <span className="section-eyebrow">Our Products</span>
+          <h2 className="section-heading">Software we build, own and ship.</h2>
+          <p className="section-text">
+            Deployed across Healthcare, Legal, CRM and Education — built and maintained in-house,
+            not outsourced once it ships.
           </p>
         </div>
 
         <div className="showcase__grid">
-          {PRODUCTS.map((product) => (
-            <article key={product.name} className="product-card">
-              <div className={`product-card__mockup product-card__mockup--${product.accent}`}>
+          {PRODUCTS.map((product, index) => (
+            <SpotlightCard
+              as="article"
+              key={product.name}
+              className={`product-card card blur-fade ${isVisible ? 'blur-fade--visible' : ''}`}
+              style={{ transitionDelay: `${0.1 + index * 0.1}s` }}
+            >
+              <div className="product-card__mockup">
                 <div className="product-card__mockup-bar">
                   <span />
                   <span />
@@ -66,9 +70,7 @@ function ProductShowcase() {
                 </div>
               </div>
 
-              <span className={`product-card__tag product-card__tag--${product.accent}`}>
-                {product.industry}
-              </span>
+              <span className="product-card__tag tag">{product.industry}</span>
               <h3 className="product-card__name">{product.name}</h3>
               <p className="product-card__description">{product.description}</p>
 
@@ -79,14 +81,20 @@ function ProductShowcase() {
               </ul>
 
               <div className="product-card__actions">
-                <a href="#" className="product-card__link" onClick={(event) => event.preventDefault()}>
-                  View Product →
-                </a>
+                {product.href ? (
+                  <a href={product.href} className="product-card__link">
+                    View Product →
+                  </a>
+                ) : (
+                  <a href="#" className="product-card__link" onClick={(event) => event.preventDefault()}>
+                    View Product →
+                  </a>
+                )}
                 <a href="#" className="product-card__demo" onClick={(event) => event.preventDefault()}>
                   Request Demo
                 </a>
               </div>
-            </article>
+            </SpotlightCard>
           ))}
         </div>
       </div>

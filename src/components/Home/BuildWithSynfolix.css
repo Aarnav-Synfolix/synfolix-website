@@ -1,25 +1,39 @@
 .build {
-  padding: 5rem 0;
-  background: #111827;
-  color: #ffffff;
+  padding: 7rem 0;
+  background: var(--color-navy);
+  color: var(--color-white);
   text-align: center;
 }
 
+.build__eyebrow {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: var(--color-teal-light);
+  margin-bottom: 1.5rem;
+}
+
 .build__heading {
-  font-size: 2.25rem;
+  font-size: clamp(2rem, 1.5rem + 2.2vw, 3rem);
   font-weight: 800;
+  letter-spacing: -0.02em;
   max-width: 36rem;
   margin: 0 auto 3.5rem;
 }
 
 .build__journey {
+  position: relative;
+  margin-bottom: 3.5rem;
+}
+
+.build__journey-list {
   list-style: none;
   display: flex;
   align-items: flex-start;
   justify-content: center;
   gap: 0;
-  margin-bottom: 3.5rem;
   flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
 }
 
 .build__step {
@@ -37,8 +51,8 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #1f2937;
-  border: 1px solid #374151;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   font-size: 0.85rem;
   font-weight: 700;
   margin-bottom: 0.6rem;
@@ -46,61 +60,43 @@
 
 .build__step-label {
   font-size: 0.85rem;
-  color: #d1d5db;
-}
-
-.build__step-connector {
-  position: absolute;
-  top: 18px;
-  left: calc(50% + 18px);
-  width: calc(100% - 36px);
-  height: 1px;
-  background: #374151;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .build__capabilities {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.75rem;
   margin-bottom: 3rem;
 }
 
 .build__pill {
+  display: inline-block;
   font-size: 0.85rem;
   font-weight: 600;
-  color: #e5e7eb;
-  background: #1f2937;
-  border: 1px solid #374151;
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   padding: 0.5rem 1.1rem;
   border-radius: 999px;
+  white-space: nowrap;
 }
 
 .build__cta {
   display: inline-block;
   padding: 0.9rem 1.8rem;
-  background: #ffffff;
-  color: #111827;
+  background: var(--color-accent);
+  color: var(--color-white);
   font-size: 0.95rem;
   font-weight: 700;
-  border-radius: 8px;
+  border-radius: 999px;
   text-decoration: none;
+  transition: background 0.2s ease;
 }
 
 .build__cta:hover {
-  background: #e5e7eb;
+  background: var(--color-accent-dark);
 }
 
 @media (max-width: 700px) {
-  .build__heading {
-    font-size: 1.75rem;
-  }
-
   .build__step {
     width: 5rem;
-  }
-
-  .build__step-connector {
-    display: none;
   }
 }

@@ -9,20 +9,26 @@ function ApplicationProcess() {
   return (
     <section
       ref={ref}
-      className={`application-process reveal-left ${isVisible ? 'reveal-left--visible' : ''}`}
+      className={`application-process blur-fade ${isVisible ? 'blur-fade--visible' : ''}`}
       id="application-process"
     >
       <div className="container">
-        <h2 className="application-process__heading">Application Process</h2>
-        <p className="application-process__text">
-          A straightforward process — we aim to get back to every applicant within a few
-          business days at each step.
-        </p>
+        <div className="section-intro">
+          <span className="section-eyebrow">Application Process</span>
+          <h2 className="section-heading">A straightforward process.</h2>
+          <p className="section-text">
+            We aim to get back to every applicant within a few business days at each step.
+          </p>
+        </div>
 
         <ol className="application-process__row">
           {STEPS.map((step, index) => (
-            <li key={step} className="application-step">
-              <div className="application-step__card">
+            <li
+              key={step}
+              className={`application-step blur-fade ${isVisible ? 'blur-fade--visible' : ''}`}
+              style={{ transitionDelay: `${0.08 * index}s` }}
+            >
+              <div className="application-step__card card">
                 <span className="application-step__number">{String(index + 1).padStart(2, '0')}</span>
                 <span className="application-step__label">{step}</span>
               </div>

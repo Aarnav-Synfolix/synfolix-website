@@ -1,21 +1,19 @@
 .open-positions {
-  padding: 5rem 0;
+  padding: 7rem 0;
   background: var(--color-mist);
 }
 
 .open-positions__header {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 
-.open-positions__heading {
-  font-size: 2rem;
-  font-weight: 800;
-  color: var(--color-navy);
+.open-positions__intro {
+  margin-bottom: 0;
 }
 
 .open-positions__filter {
@@ -49,9 +47,6 @@
   justify-content: space-between;
   gap: 1.5rem;
   padding: 1.5rem 1.75rem;
-  background: var(--color-white);
-  border: 1px solid var(--color-border);
-  border-radius: 14px;
 }
 
 .job-card__title {

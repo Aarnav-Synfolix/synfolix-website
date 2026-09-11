@@ -1,25 +1,6 @@
 .industries {
-  padding: 5rem 0;
-  background: #ffffff;
-}
-
-.industries__intro {
-  max-width: 42rem;
-  margin: 0 auto 3rem;
-  text-align: center;
-}
-
-.industries__heading {
-  font-size: 2.25rem;
-  font-weight: 800;
-  color: #111827;
-  margin-bottom: 1rem;
-}
-
-.industries__text {
-  font-size: 1.05rem;
-  line-height: 1.65;
-  color: #4b5563;
+  padding: 7rem 0;
+  background: var(--color-white);
 }
 
 .industries__grid {
@@ -32,27 +13,37 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.5rem 1.75rem;
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
+  padding: 1.75rem;
+  background: var(--color-mist);
+  border-color: transparent;
   text-decoration: none;
 }
 
 .industry-card:hover {
-  border-color: #c7d2fe;
-  background: #eef2ff;
+  background: var(--color-white);
 }
 
 .industry-card__name {
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  color: #111827;
+  letter-spacing: -0.005em;
+  color: var(--color-navy);
 }
 
 .industry-card__arrow {
-  font-size: 1.1rem;
-  color: #6366f1;
+  font-size: 1.2rem;
+  color: var(--color-accent);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.industry-card:hover .industry-card__arrow {
+  transform: translateX(4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .industry-card__arrow {
+    transition: none;
+  }
 }
 
 .industries__more {
@@ -63,17 +54,18 @@
 
 .industries__more-btn {
   padding: 0.75rem 1.6rem;
-  background: #ffffff;
-  color: #111827;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
+  background: var(--color-white);
+  color: var(--color-navy);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
+  transition: border-color 0.2s ease;
 }
 
 .industries__more-btn:hover {
-  border-color: #9ca3af;
+  border-color: var(--color-navy);
 }
 
 @media (max-width: 900px) {
